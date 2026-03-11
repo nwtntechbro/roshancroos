@@ -1,1 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>Empower Leadership Academy</title>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo">
+                    <h1>EMPOWER<span>Leadership</span></h1>
+                </div>
+                <div class="nav-toggle" id="navToggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#programs">Programs</a></li>
+                    <li><a href="#events">Events</a></li>
+                    <li><a href="#coaching">Coaching</a></li>
+                    <li><a href="#blog">Blog</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="login.html" class="btn-login"><i class="fas fa-user"></i> Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <span class="hero-badge">Live Speaker Energy</span>
+                <h1>Unlock Your <span class="highlight">Peak Potential</span></h1>
+                <p>World-class leadership training directly from the stage. Transform your life, business, and future.</p>
+                <div class="hero-buttons">
+                    <a href="#events" class="btn btn-primary">View Events</a>
+                    <a href="#coaching" class="btn btn-outline">Book Coaching</a>
+                </div>
+                <div class="hero-video">
+                    <i class="fas fa-play-circle"></i>
+                    <span>Watch Introduction</span>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://via.placeholder.com/600x400/1e2b32/f7c35c?text=SPEAKER+LIVE" alt="Speaker">
+            </div>
+        </div>
+    </section>
+
+    <!-- Upcoming Events Preview -->
+    <section class="events-preview">
+        <div class="container">
+            <div class="section-header">
+                <h2>Upcoming <span class="highlight">Events</span></h2>
+                <a href="#events" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="events-grid" id="upcomingEvents">
+                <!-- Events will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Programs Section -->
+    <section id="programs" class="programs">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our <span class="highlight">Programs</span></h2>
+                <p>Transformative training for every level</p>
+            </div>
+            <div class="programs-grid" id="programsList">
+                <!-- Programs loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="https://via.placeholder.com/500x600/2d2d2d/f7c35c?text=JOHN+MAXWELL" alt="Speaker">
+                </div>
+                <div class="about-text">
+                    <span class="section-subtitle">World-Renowned Speaker</span>
+                    <h2>John Maxwell</h2>
+                    <p class="about-bio">With over 30 years on stage and 10 million lives impacted, John Maxwell is one of the world's most influential leadership experts. New York Times bestselling author, trusted advisor to Fortune 500 CEOs, and mentor to millions.</p>
+                    <div class="achievements">
+                        <div class="achievement-item">
+                            <i class="fas fa-users"></i>
+                            <span>10M+ Lives Impacted</span>
+                        </div>
+                        <div class="achievement-item">
+                            <i class="fas fa-book"></i>
+                            <span>80+ Books Written</span>
+                        </div>
+                        <div class="achievement-item">
+                            <i class="fas fa-globe"></i>
+                            <span>150+ Countries</span>
+                        </div>
+                    </div>
+                    <a href="#about-full" class="btn btn-primary">Read Full Biography</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coaching Booking System -->
+    <section id="coaching" class="coaching">
+        <div class="container">
+            <div class="section-header">
+                <h2>Book <span class="highlight">Coaching</span></h2>
+                <p>Personalized sessions for breakthrough results</p>
+            </div>
+            <div class="booking-container">
+                <div class="booking-steps">
+                    <div class="step active" data-step="1">
+                        <span class="step-number">1</span>
+                        <span class="step-text">Select Package</span>
+                    </div>
+                    <div class="step" data-step="2">
+                        <span class="step-number">2</span>
+                        <span class="step-text">Choose Date & Time</span>
+                    </div>
+                    <div class="step" data-step="3">
+                        <span class="step-number">3</span>
+                        <span class="step-text">Your Details</span>
+                    </div>
+                    <div class="step" data-step="4">
+                        <span class="step-number">4</span>
+                        <span class="step-text">Confirm</span>
+                    </div>
+                </div>
+
+                <div class="booking-form">
+                    <!-- Step 1: Select Package -->
+                    <div class="booking-step" id="step1">
+                        <h3>Select Coaching Package</h3>
+                        <div class="packages-grid" id="coachingPackages">
+                            <!-- Packages loaded dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Date & Time -->
+                    <div class="booking-step hidden" id="step2">
+                        <h3>Select Date & Time</h3>
+                        <div class="calendar-container">
+                            <div class="calendar-header">
+                                <button class="calendar-prev"><i class="fas fa-chevron-left"></i></button>
+                                <h4 id="currentMonth">March 2026</h4>
+                                <button class="calendar-next"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                            <div class="calendar-weekdays">
+                                <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                            </div>
+                            <div class="calendar-days" id="calendarDays">
+                                <!-- Calendar days loaded dynamically -->
+                            </div>
+                        </div>
+                        <div class="time-slots">
+                            <h4>Available Time Slots</h4>
+                            <div class="slots-grid" id="timeSlots">
+                                <!-- Time slots loaded dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: User Details -->
+                    <div class="booking-step hidden" id="step3">
+                        <h3>Your Information</h3>
+                        <form id="bookingDetailsForm">
+                            <div class="form-group">
+                                <label for="fullName">Full Name *</label>
+                                <input type="text" id="fullName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email *</label>
+                                <input type="email" id="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone *</label>
+                                <input type="tel" id="phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="company">Company (Optional)</label>
+                                <input type="text" id="company">
+                            </div>
+                            <div class="form-group">
+                                <label for="reason">Reason for Coaching *</label>
+                                <textarea id="reason" rows="4" required></textarea>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Step 4: Confirmation -->
+                    <div class="booking-step hidden" id="step4">
+                        <h3>Confirm Your Booking</h3>
+                        <div class="booking-summary" id="bookingSummary">
+                            <!-- Summary loaded dynamically -->
+                        </div>
+                        <div class="payment-options">
+                            <h4>Payment Method</h4>
+                            <div class="payment-methods">
+                                <label class="payment-method">
+                                    <input type="radio" name="payment" value="stripe" checked>
+                                    <i class="fab fa-cc-stripe"></i> Stripe
+                                </label>
+                                <label class="payment-method">
+                                    <input type="radio" name="payment" value="paypal">
+                                    <i class="fab fa-paypal"></i> PayPal
+                                </label>
+                                <label class="payment-method">
+                                    <input type="radio" name="payment" value="bank">
+                                    <i class="fas fa-university"></i> Bank Transfer
+                                </label>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-block" id="confirmBooking">Confirm & Pay</button>
+                    </div>
+
+                    <div class="booking-navigation">
+                        <button class="btn btn-outline" id="prevStep" disabled>Previous</button>
+                        <button class="btn btn-primary" id="nextStep">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog" class="blog">
+        <div class="container">
+            <div class="section-header">
+                <h2>Latest <span class="highlight">Articles</span></h2>
+                <a href="#blog" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="blog-grid" id="blogPosts">
+                <!-- Blog posts loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>What <span class="highlight">Clients Say</span></h2>
+            </div>
+            <div class="testimonials-slider" id="testimonials">
+                <!-- Testimonials loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Media Section -->
+    <section class="media">
+        <div class="container">
+            <div class="section-header">
+                <h2>Explore <span class="highlight">Media</span></h2>
+            </div>
+            <div class="media-grid" id="mediaContent">
+                <!-- Media loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h2>Get In Touch</h2>
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Address</h4>
+                            <p id="companyAddress">123 Speaker Ave, New York, NY 10001</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4>Phone</h4>
+                            <p id="companyPhone">+1 (800) 555-1234</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p id="companyEmail">info@empowerleadership.com</p>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input type="text" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" placeholder="Subject">
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="Your Message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2>Stay Updated</h2>
+                <p>Subscribe to receive latest events and leadership insights</p>
+                <form id="newsletterForm">
+                    <input type="email" placeholder="Your Email Address" required>
+                    <button type="submit" class="btn btn-primary">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>EMPOWER</h3>
+                    <p>Transforming leaders worldwide through powerful training and coaching.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#programs">Programs</a></li>
+                        <li><a href="#events">Events</a></li>
+                        <li><a href="#blog">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Programs</h4>
+                    <ul>
+                        <li><a href="#">Leadership Training</a></li>
+                        <li><a href="#">Business Coaching</a></li>
+                        <li><a href="#">SaaS Training</a></li>
+                        <li><a href="#">Master Speaker</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +1 (800) 555-1234</li>
+                        <li><i class="fas fa-envelope"></i> info@empower.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> New York, NY</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Empower Leadership Academy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JS -->
+    <script src="js/main.js"></script>
+</body>
+</html>
