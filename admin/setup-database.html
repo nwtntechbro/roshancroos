@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Setup - Empower Leadership</title>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .setup-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .config-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .config-section h3 {
+            margin-bottom: 15px;
+            color: #555;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #666;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .btn-create {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 20px 0;
+            transition: transform 0.3s;
+        }
+        
+        .btn-create:hover {
+            transform: translateY(-2px);
+        }
+        
+        .log-container {
+            background: #1e1e2f;
+            color: #0f0;
+            border-radius: 10px;
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .success {
+            color: #0f0;
+        }
+        
+        .error {
+            color: #f00;
+        }
+        
+        .collection-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .collection-tag {
+            background: #e9ecef;
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        .collection-tag i {
+            color: #28a745;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="setup-container">
+        <h1><i class="fas fa-database"></i> Firebase Database Setup</h1>
+        <p style="text-align: center; color: #666; margin-bottom: 30px;">Create all collections and tables with one click</p>
+        
+        <div class="config-section">
+            <h3>Firebase Configuration</h3>
+            <div class="form-group">
+                <label>Project ID</label>
+                <input type="text" id="projectId" value="roshancroos-97cdd" readonly>
+            </div>
+            <div class="form-group">
+                <label>API Key</label>
+                <input type="text" id="apiKey" value="AIzaSyAJMhojec6G1AkQJh0ifiendwrEIvYGYxQ" readonly>
+            </div>
+        </div>
+        
+        <h3>Collections to be created (21 tables)</h3>
+        <div class="collection-list">
+            <span class="collection-tag"><i class="fas fa-check-circle"></i> users</span>
+            <span class="collection-tag"><i class="fas fa-check-circle"></i> bookings</span>
+            <span class="collection-tag"><i class="fas fa-check-circle"></i> events</span>
+            <span class="collection-tag"><i class="fas fa-check-circle"></i> programs</span>
+            <span class="collection-tag"><i class="fas fa-check-circle"></i> coaching_packages</span>
+            <span class="collection-tag"><i class="fas fa-check-circle"></i> testimonials</span>
+            <span class="collection-tag"><i class="fas fa-check-circle"></i> time_slots</span>
+            <span class="collection-tag"><i class="fas fa-check-circle"></i> payments</span>
+            <span class="collection-tag"><i class="fas fa-check-circle"></i> settings</span>
+            <span class="collection-tag"><i class="fas fa-check-circle"></i> company</span>
+            <span class="collection-tag"><i class="fas fa-check-circle"></i> speaker</span>
+            <span class="collection-tag"><i class="fas fa-check-circle"></i> articles</span>
+            <span class="collection-tag"><i class="fas fa-check-circle"></i> books</span>
+            <span class="collection-tag"><i class="fas fa-check-circle"></i> media</span>
+            <span class="collection-tag"><i class="fas fa-check-circle"></i> event_registrations</span>
+            <span class="collection-tag"><i class="fas fa-check-circle"></i> blocked_dates</span>
+            <span class="collection-tag"><i class="fas fa-check-circle"></i> contacts</span>
+            <span class="collection-tag"><i class="fas fa-check-circle"></i> newsletter</span>
+            <span class="collection-tag"><i class="fas fa-check-circle"></i> team</span>
+            <span class="collection-tag"><i class="fas fa-check-circle"></i> admin_users</span>
+            <span class="collection-tag"><i class="fas fa-check-circle"></i> gallery</span>
+        </div>
+        
+        <button class="btn-create" onclick="createAllCollections()">
+            <i class="fas fa-magic"></i> CREATE ALL COLLECTIONS
+        </button>
+        
+        <div class="log-container" id="logContainer">
+            <div class="log-entry">Ready to create collections...</div>
+        </div>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAJMhojec6G1AkQJh0ifiendwrEIvYGYxQ",
+            authDomain: "roshancroos-97cdd.firebaseapp.com",
+            projectId: "roshancroos-97cdd",
+            storageBucket: "roshancroos-97cdd.firebasestorage.app",
+            messagingSenderId: "906840504110",
+            appId: "1:906840504110:web:8a603e41bfd725be616cbf",
+            measurementId: "G-3JFH2485YV"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        
+        function addLog(message, type = 'info') {
+            const log = document.getElementById('logContainer');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry ' + (type === 'success' ? 'success' : type === 'error' ? 'error' : '');
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+        }
+        
+        async function createAllCollections() {
+            addLog('Starting database setup...');
+            
+            const collections = [
+                {
+                    name: 'company',
+                    docId: 'main_settings',
+                    data: {
+                        companyName: 'EMPOWER',
+                        tagline: 'Live Leadership Academy',
+                        primaryColor: '#f7c35c',
+                        address: '123 Speaker Ave, New York, NY 10001',
+                        email: 'info@empowerleadership.com',
+                        phone: '+1 (800) 555-1234',
+                        social: {
+                            facebook: 'https://facebook.com/empower',
+                            twitter: 'https://twitter.com/empower',
+                            instagram: 'https://instagram.com/empower',
+                            linkedin: 'https://linkedin.com/company/empower',
+                            youtube: 'https://youtube.com/empower'
+                        },
+                        updatedAt: new Date().toISOString()
+                    }
+                },
+                {
+                    name: 'speaker',
+                    docId: 'profile',
+                    data: {
+                        name: 'John Maxwell',
+                        title: 'World-Renowned Leadership Expert',
+                        bio: 'With over 30 years on stage and 10 million lives impacted...',
+                        image: 'speaker.jpg',
+                        achievements: [
+                            'New York Times Bestselling Author',
+                            'Global Speaker Award 2024',
+                            'Fortune 500 Advisor'
+                        ],
+                        video: 'intro.mp4',
+                        social: {
+                            twitter: '@johnmaxwell',
+                            linkedin: 'johnmaxwell'
+                        }
+                    }
+                },
+                {
+                    name: 'time_slots',
+                    docId: 'default_week',
+                    data: {
+                        monday: ['09:00', '11:00', '14:00', '16:00'],
+                        tuesday: ['09:00', '14:00'],
+                        wednesday: ['09:00', '11:00', '15:00'],
+                        thursday: ['10:00', '14:00', '16:30'],
+                        friday: ['09:00', '11:00'],
+                        saturday: [],
+                        sunday: [],
+                        timezone: 'America/New_York',
+                        meetingDuration: 60
+                    }
+                },
+                {
+                    name: 'coaching_packages',
+                    docId: 'business_breakthrough',
+                    data: {
+                        title: 'Business Breakthrough',
+                        price: 1497,
+                        duration: '90 minutes',
+                        description: 'One-on-one strategy session for business leaders',
+                        features: [
+                            'Personalized strategy',
+                            'Action plan',
+                            'Follow-up materials'
+                        ],
+                        active: true
+                    }
+                },
+                {
+                    name: 'coaching_packages',
+                    docId: 'peak_performance',
+                    data: {
+                        title: 'Peak Performance',
+                        price: 997,
+                        duration: '60 minutes',
+                        description: 'Optimize your personal and professional performance',
+                        features: [
+                            'Mindset coaching',
+                            'Goal setting',
+                            'Accountability check'
+                        ],
+                        active: true
+                    }
+                },
+                {
+                    name: 'programs',
+                    docId: 'leadership_academy',
+                    data: {
+                        title: 'Leadership Academy',
+                        description: '6-week immersive leadership program',
+                        curriculum: [
+                            'Week 1: Foundation of Leadership',
+                            'Week 2: Emotional Intelligence',
+                            'Week 3: Communication Mastery',
+                            'Week 4: Team Building',
+                            'Week 5: Strategic Thinking',
+                            'Week 6: Execution & Results'
+                        ],
+                        trainer: 'John Maxwell',
+                        duration: '6 weeks',
+                        price: 2997,
+                        eventDate: '2026-05-04',
+                        image: 'leadership.jpg',
+                        active: true
+                    }
+                },
+                {
+                    name: 'events',
+                    docId: 'nyc_destiny_2026',
+                    data: {
+                        title: 'NYC Date with Destiny',
+                        type: 'Live',
+                        location: 'Madison Square Garden, New York',
+                        eventDate: '2026-09-12',
+                        eventTime: '09:00',
+                        ticketPrice: 199,
+                        seats: 300,
+                        remainingSeats: 300,
+                        image: 'nyc_event.jpg',
+                        agenda: [
+                            '09:00 - Registration',
+                            '10:00 - Opening Keynote',
+                            '12:00 - Lunch Break',
+                            '13:00 - Workshop Session',
+                            '16:00 - Closing Ceremony'
+                        ],
+                        speakers: ['John Maxwell', 'Sarah Johnson'],
+                        status: 'upcoming'
+                    }
+                },
+                {
+                    name: 'testimonials',
+                    docId: 'sarah_johnson',
+                    data: {
+                        name: 'Sarah Johnson',
+                        company: 'TechCorp',
+                        position: 'CEO',
+                        review: 'Life-changing experience! John\'s coaching transformed our entire leadership team.',
+                        rating: 5,
+                        photo: 'sarah.jpg',
+                        date: '2026-01-15'
+                    }
+                },
+                {
+                    name: 'admin_users',
+                    docId: 'admin',
+                    data: {
+                        email: 'admin@empower.com',
+                        role: 'super_admin',
+                        permissions: ['all'],
+                        createdAt: new Date().toISOString()
+                    }
+                }
+            ];
+            
+            for (const col of collections) {
+                try {
+                    addLog(`Creating ${col.name} collection...`);
+                    await db.collection(col.name).doc(col.docId).set(col.data, { merge: true });
+                    addLog(`✓ Collection ${col.name} created successfully`, 'success');
+                } catch (error) {
+                    addLog(`✗ Error creating ${col.name}: ${error.message}`, 'error');
+                }
+            }
+            
+            // Create empty collections
+            const emptyCollections = ['users', 'bookings', 'payments', 'articles', 'books', 'media', 'event_registrations', 'blocked_dates', 'contacts', 'newsletter', 'team', 'gallery'];
+            
+            for (const col of emptyCollections) {
+                try {
+                    addLog(`Initializing ${col} collection...`);
+                    await db.collection(col).doc('_template').set({
+                        _created: new Date().toISOString(),
+                        _note: 'Template document - collection ready'
+                    });
+                    addLog(`✓ Collection ${col} initialized`, 'success');
+                } catch (error) {
+                    addLog(`✗ Error initializing ${col}: ${error.message}`, 'error');
+                }
+            }
+            
+            addLog('✅ Database setup complete! All collections created.', 'success');
+        }
+    </script>
+</body>
+</html>
