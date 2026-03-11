@@ -1,1 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Empower Leadership</title>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Admin CSS -->
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">EMPOWER<span>Admin</span></div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active"><a href="#dashboard"><i class="fas fa-dashboard"></i> Dashboard</a></li>
+                    <li><a href="#website"><i class="fas fa-globe"></i> Website Settings</a></li>
+                    <li><a href="#speaker"><i class="fas fa-user-tie"></i> Speaker Profile</a></li>
+                    <li><a href="#events"><i class="fas fa-calendar"></i> Events</a></li>
+                    <li><a href="#programs"><i class="fas fa-graduation-cap"></i> Programs</a></li>
+                    <li><a href="#coaching"><i class="fas fa-chart-line"></i> Coaching</a></li>
+                    <li><a href="#bookings"><i class="fas fa-book"></i> Bookings</a></li>
+                    <li><a href="#calendar"><i class="fas fa-clock"></i> Calendar</a></li>
+                    <li><a href="#blog"><i class="fas fa-blog"></i> Blog & Articles</a></li>
+                    <li><a href="#media"><i class="fas fa-video"></i> Media</a></li>
+                    <li><a href="#testimonials"><i class="fas fa-star"></i> Testimonials</a></li>
+                    <li><a href="#users"><i class="fas fa-users"></i> Users</a></li>
+                    <li><a href="#payments"><i class="fas fa-credit-card"></i> Payments</a></li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="adminEmail">admin@empower.com</span>
+                </div>
+                <button id="logoutBtn" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </aside>
 
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h1 id="pageTitle">Dashboard</h1>
+                <div class="header-actions">
+                    <span class="date-display" id="currentDate"></span>
+                </div>
+            </div>
+
+            <div class="content-body" id="contentBody">
+                <!-- Dashboard Content -->
+                <div id="dashboard" class="page active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="stat-details">
+                                <h3 id="totalBookings">0</h3>
+                                <p>Total Bookings</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="stat-details">
+                                <h3 id="upcomingEvents">0</h3>
+                                <p>Upcoming Events</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-details">
+                                <h3 id="totalUsers">0</h3>
+                                <p>Registered Users</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <div class="stat-details">
+                                <h3 id="totalRevenue">$0</h3>
+                                <p>Total Revenue</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h3>Bookings Overview</h3>
+                            <canvas id="bookingsChart"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <h3>Revenue by Month</h3>
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="recent-activity">
+                        <h3>Recent Bookings</h3>
+                        <table class="data-table" id="recentBookings">
+                            <thead>
+                                <tr>
+                                    <th>Customer</th>
+                                    <th>Package</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Loaded dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Website Settings -->
+                <div id="website" class="page">
+                    <div class="page-header">
+                        <h2>Website Settings</h2>
+                        <button class="btn-save" onclick="saveWebsiteSettings()">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+                    </div>
+                    
+                    <div class="settings-grid">
+                        <div class="settings-card">
+                            <h3>General Information</h3>
+                            <div class="form-group">
+                                <label>Website Name</label>
+                                <input type="text" id="websiteName" value="EMPOWER">
+                            </div>
+                            <div class="form-group">
+                                <label>Tagline</label>
+                                <input type="text" id="tagline" value="Live Leadership Academy">
+                            </div>
+                            <div class="form-group">
+                                <label>Primary Color</label>
+                                <input type="color" id="primaryColor" value="#f7c35c">
+                            </div>
+                            <div class="form-group">
+                                <label>Logo Upload</label>
+                                <input type="file" id="logoUpload" accept="image/*">
+                                <div class="logo-preview" id="logoPreview"></div>
+                            </div>
+                        </div>
+
+                        <div class="settings-card">
+                            <h3>Contact Information</h3>
+                            <div class="form-group">
+                                <label>Address</label>
+                                <input type="text" id="address" value="123 Speaker Ave, NYC">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="email" value="info@empower.com">
+                            </div>
+                            <div class="form-group">
+                                <label>Phone</label>
+                                <input type="text" id="phone" value="+1 (800) 555-1234">
+                            </div>
+                        </div>
+
+                        <div class="settings-card">
+                            <h3>Social Media Links</h3>
+                            <div class="form-group">
+                                <label><i class="fab fa-facebook"></i> Facebook</label>
+                                <input type="url" id="facebook" value="https://facebook.com/empower">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fab fa-twitter"></i> Twitter</label>
+                                <input type="url" id="twitter" value="https://twitter.com/empower">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fab fa-instagram"></i> Instagram</label>
+                                <input type="url" id="instagram" value="https://instagram.com/empower">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fab fa-linkedin"></i> LinkedIn</label>
+                                <input type="url" id="linkedin" value="https://linkedin.com/company/empower">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Events Management -->
+                <div id="events" class="page">
+                    <div class="page-header">
+                        <h2>Events Management</h2>
+                        <button class="btn-add" onclick="showAddEventModal()">
+                            <i class="fas fa-plus"></i> Add New Event
+                        </button>
+                    </div>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Date</th>
+                                <th>Location</th>
+                                <th>Price</th>
+                                <th>Seats</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="eventsTableBody">
+                            <!-- Loaded dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Programs Management -->
+                <div id="programs" class="page">
+                    <div class="page-header">
+                        <h2>Programs Management</h2>
+                        <button class="btn-add" onclick="showAddProgramModal()">
+                            <i class="fas fa-plus"></i> Add New Program
+                        </button>
+                    </div>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Duration</th>
+                                <th>Price</th>
+                                <th>Trainer</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="programsTableBody">
+                            <!-- Loaded dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Coaching Packages -->
+                <div id="coaching" class="page">
+                    <div class="page-header">
+                        <h2>Coaching Packages</h2>
+                        <button class="btn-add" onclick="showAddPackageModal()">
+                            <i class="fas fa-plus"></i> Add Package
+                        </button>
+                    </div>
+
+                    <div class="packages-grid" id="coachingPackagesGrid">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+
+                <!-- Bookings Management -->
+                <div id="bookings" class="page">
+                    <h2>All Bookings</h2>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Customer</th>
+                                <th>Package</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                                <th>Payment</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookingsTableBody">
+                            <!-- Loaded dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Calendar Management -->
+                <div id="calendar" class="page">
+                    <div class="page-header">
+                        <h2>Calendar Settings</h2>
+                        <button class="btn-save" onclick="saveTimeSlots()">
+                            <i class="fas fa-save"></i> Save Slots
+                        </button>
+                    </div>
+
+                    <div class="calendar-settings">
+                        <h3>Available Time Slots</h3>
+                        <div class="days-grid" id="timeSlotsEditor">
+                            <!-- Generated dynamically -->
+                        </div>
+
+                        <h3>Blocked Dates</h3>
+                        <div class="blocked-dates">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Reason</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="blockedDatesBody">
+                                    <!-- Loaded dynamically -->
+                                </tbody>
+                            </table>
+                            <button class="btn-add" onclick="showAddBlockedDateModal()">
+                                <i class="fas fa-plus"></i> Block Date
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blog Management -->
+                <div id="blog" class="page">
+                    <div class="page-header">
+                        <h2>Blog & Articles</h2>
+                        <button class="btn-add" onclick="showAddArticleModal()">
+                            <i class="fas fa-plus"></i> Write New Article
+                        </button>
+                    </div>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="articlesTableBody">
+                            <!-- Loaded dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Users Management -->
+                <div id="users" class="page">
+                    <h2>Users Management</h2>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Bookings</th>
+                                <th>Joined</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <!-- Loaded dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('eventModal')">&times;</span>
+            <h2 id="modalTitle">Add New Event</h2>
+            <form id="eventForm">
+                <div class="form-group">
+                    <label>Event Title</label>
+                    <input type="text" id="eventTitle" required>
+                </div>
+                <div class="form-group">
+                    <label>Event Type</label>
+                    <select id="eventType">
+                        <option value="Live">Live</option>
+                        <option value="Online">Online</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" id="eventLocation" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="eventDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Time</label>
+                        <input type="time" id="eventTime" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Ticket Price ($)</label>
+                        <input type="number" id="eventPrice" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Total Seats</label>
+                        <input type="number" id="eventSeats" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Event Image</label>
+                    <input type="file" id="eventImage" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label>Agenda</label>
+                    <textarea id="eventAgenda" rows="4"></textarea>
+                </div>
+                <button type="submit" class="btn-save">Save Event</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>
